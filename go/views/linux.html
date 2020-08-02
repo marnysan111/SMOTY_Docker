@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>SMOTY</title>
+  </head>
+  <body>
+      <!--上の見出し部分-->
+    <div class="bg-info clearfix p-1 mb-1 ">
+      <div class="container">
+      <!--リンク-->    
+        <a href="/smoty" type="button" class="btn float-left text-white font-weight-bold">SMOTY</a>
+        <a href="/urls" type="button" class="btn  float-left text-white font-weight-bold">URL集</a>
+        <a href="/logout" type="button" class="btn float-right text-white font-weight-bold">ログアウト</a>
+        <a href="#" type="button" class="btn float-right text-white font-weight-bold">{{ .user_name }}さん</a>
+      </div>
+    </div>
+
+    <!--見出しみたいなの-->
+      <div class="container">
+        <div class="jumbotron">
+          <h1>Linuxリテラシー</h1>
+          ここでは、情報技術者として必須能力である、「Linuxリテラシー」について学んでもらいます。
+        </div>
+      </div>
+
+  {{ range .linux }}
+    <div class="container">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">問{{ .ID }}：{{ .Question }}</h4>
+                  <div class="container">
+            <div class="row">
+            <div class="col-lg-6">
+                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#hint{{.ID}}" aria-expanded="false" aria-controls="collapseExample">
+                        ヒントを見る
+                    </button>
+                    <div class="collapse" id="hint{{.ID}}">
+                        <div class="border p-3">
+                            <p>{{.Hint}}</p>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-lg-6">
+                <form method="post" action="/smoty/router/check/{{.ID}}">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#anser{{.ID}}" aria-expanded="false" aria-controls="collapseExample">
+                        解答する
+                    </button>
+                    <div class="collapse" id="anser{{.ID}}">
+                        <div class="border p-3">
+                            <input type="text" name="anser" class="form-control">
+                            <input type="submit" class="btn btn-primary" value="解答">      
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  {{ end }}
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="../assets/smoty.js"></script>
+</body>
+</html>

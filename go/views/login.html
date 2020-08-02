@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>
+            ログイン
+        </title>
+    </head>
+    <body>
+        <h1>サインアップはこちら</h1>
+        <form action="/signup" method="POST">
+            <label for="name">名前：</label>
+            <input type="text" name="name">
+            <label for="password">パスワード：</label>
+            <input type="password" name="password">
+            <button type="submit">登録</button>
+        </form>
+
+    <h1>ログインはこちら</h1>
+    <form action="/login" method="POST">
+        <label for="name">名前：</label>
+        <input type="text" name="name">
+        <label for="password">パスワード：</label>
+        <input type="password" name="password">
+        <button type="submit">ログイン</button>
+    </form>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="../assets/smoty.js"></script>
+    </body>
+</html>

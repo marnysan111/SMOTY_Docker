@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>SMOTY</title>
+    <link rel="stylesheet" href="../assets/smoty.css">
+  </head>
+  <body>
+      <!--上の見出し部分-->
+    <div class="bg-info clearfix p-1 mb-1 ">
+      <div class="container">
+        <!--リンク-->    
+        <a href="/smoty" type="button" class="btn float-left text-white font-weight-bold">SMOTY</a>
+        <a href="/urls" type="button" class="btn  float-left text-white font-weight-bold">URL集</a>
+        <a href="/logout" type="button" class="btn float-right text-white font-weight-bold">ログアウト</a>
+        <a href="#" type="button" class="btn float-right text-white font-weight-bold">{{ .user_name }}さん</a>
+      </div>
+    </div>
+    
+    <!--見出しみたいなの-->
+      <div class="container">
+        <div class="jumbotron">
+          <h1>SMOTYへようこそ！</h1>
+          SMOTYは、情報技術を勉強したい高専生のために作成された問題演習サイトです
+        </div>
+      </div>
+    
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card img-thumbnail">
+              <img class="card-img-top " height="300" src="/pictures/Linux.png" alt="Card image cap">
+                <div class="card-body">
+                  <h4 class="card-title">Linuxリテラシー</h4>
+                  <p class="card-text">基本的なLinuxコマンドを学習することができます</p>
+                  <a href="/smoty/linux" class="btn btn-primary">問題へ</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-4">
+              <div class="card img-thumbnail">
+              <img class="card-img-top " height="300" src="/pictures/Server.png" alt="Card image cap">
+                <div class="card-body">
+                  <h4 class="card-title">サーバ構築</h4>
+                  <p class="card-text">DNS,mailなどのサーバ構築に必要なものを学習することができます</p>
+                  <a href="/smoty/server" class="btn btn-primary">問題へ</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="card img-thumbnail">
+              <img class="card-img-top " height="300" src="/pictures/Router.png" alt="Card image cap">
+                <div class="card-body">
+                  <h4 class="card-title">ルーティング</h4>
+                  <p class="card-text">イントラ構築にて必須である、ルーティングについて学習することができます</p>
+                  <a href="/smoty/router" class="btn btn-primary">問題へ</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div id="chatbox">    
+
+      </div>
+
+      <script src="https://unpkg.com/vue"></script>
+      <script src="../assets/smoty.js"></script>
+  </body>
+</html>

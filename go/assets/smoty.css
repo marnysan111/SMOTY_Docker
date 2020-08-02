@@ -1,0 +1,24 @@
+.v-enter-active {
+    transition: all 1.0s ease 0s;
+  }
+  .v-leave-active {
+    transition: all 0.3s ease 0s;
+    position: absolute;
+  }
+  .v-enter,
+  .v-leave-to {
+    opacity: 0;
+  }
+  .v-enter {
+    transform: translateX(-60px);
+  }
+  .v-enter-to,
+  .v-leave {
+    transform: translateX(0);
+  }
+  .v-leave-to {
+    transform: translateX(60px);
+  }
+  button,div {
+    margin-bottom: 30px;
+  }

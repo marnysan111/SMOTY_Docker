@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  golang:
+    build: ./go
+    tty: true 
+    ports:
+      - "8080:8080"
+    container_name: smoty
+    depends_on:
+        - mysql
+
+
+  mysql:
+    build: ./db
+    tty: true
+    ports:
+      - "3306:3306"
+    container_name: db_smoty
+    environment:
+      MYSQL_ROOT_PASSWORD: smoty
+      MYSQL_DATABASE: score
