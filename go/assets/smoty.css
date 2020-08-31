@@ -1,24 +1,34 @@
-.v-enter-active {
-    transition: all 1.0s ease 0s;
-  }
-  .v-leave-active {
-    transition: all 0.3s ease 0s;
-    position: absolute;
-  }
-  .v-enter,
-  .v-leave-to {
-    opacity: 0;
-  }
-  .v-enter {
-    transform: translateX(-60px);
-  }
-  .v-enter-to,
-  .v-leave {
-    transform: translateX(0);
-  }
-  .v-leave-to {
-    transform: translateX(60px);
-  }
-  button,div {
-    margin-bottom: 30px;
-  }
+
+.test { 
+  background-image:url("../pictures/pc.jpeg");
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  background-size: 100%;
+}
+
+header {
+  background-color: #3366FF;
+  overflow: hidden;
+
+}
+
+.top {
+  font-size: xx-large;
+}
+
+.top2 {
+  font-size: x-large;
+}
+
+.nice-textbox{
+  position: relative;
+  display: block;
+  width: 500px;
+  margin-top: 50px;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #a0a0a0;
+  outline: none;
+}

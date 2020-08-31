@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"sort"
 	"strconv"
@@ -14,9 +15,14 @@ import (
 func linux(c *gin.Context) {
 	session := sessions.Default(c)
 	if session.Get("user_name") == nil {
-		panic("ログインしてない")
+		c.AbortWithError(http.StatusUnauthorized, errors.New("ログインしてない"))
+		return
 	}
-	linux := linuxGetAll()
+	linux, err := linuxGetAll()
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 	sort.Slice(linux, func(i, j int) bool {
 		return linux[i].ID < linux[j].ID
 	})
@@ -24,7 +30,11 @@ func linux(c *gin.Context) {
 }
 
 func root_Linux(c *gin.Context) {
-	linux := linuxGetAll()
+	linux, err := linuxGetAll()
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 	c.HTML(http.StatusOK, "rootLinux.html", gin.H{"linux": linux})
 }
 
@@ -32,9 +42,15 @@ func root_LinuxDetail(c *gin.Context) {
 	n := c.Param("id")
 	id, err := strconv.Atoi(n)
 	if err != nil {
-		panic(err)
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+
 	}
-	linux := linuxGetOne(id)
+	linux, err := linuxGetOne(id)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 	c.HTML(200, "rootLinuxDetail.html", gin.H{"linux": linux})
 }
 
@@ -42,9 +58,15 @@ func root_LinuxDeleteCheck(c *gin.Context) {
 	n := c.Param("id")
 	id, err := strconv.Atoi(n)
 	if err != nil {
-		panic(err)
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+
 	}
-	linux := linuxGetOne(id)
+	linux, nil := linuxGetOne(id)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 	c.HTML(200, "rootLinuxDelete.html", gin.H{"linux": linux})
 }
 
@@ -56,9 +78,14 @@ func linux_Check(c *gin.Context) {
 	n := c.Param("id")
 	id, err := strconv.Atoi(n)
 	if err != nil {
-		panic(err)
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
-	linux, anser := check_linux(id, a)
+	linux, anser, err := check_linux(id, a)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 	c.HTML(http.StatusOK, "linuxCheck.html", gin.H{"user_name": name, "linux": linux, "anser": anser, "a": a})
 }
 
@@ -66,7 +93,11 @@ func root_LinuxNew(c *gin.Context) {
 	question := c.PostForm("question")
 	anser := c.PostForm("anser")
 	hint := c.PostForm("hint")
-	linuxInsert(question, anser, hint)
+	err := linuxInsert(question, anser, hint)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 	c.Redirect(302, "/root/linux")
 }
 
@@ -74,9 +105,14 @@ func root_LinuxDelete(c *gin.Context) {
 	n := c.Param("id")
 	id, err := strconv.Atoi(n)
 	if err != nil {
-		panic(err)
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
-	linuxDelete(id)
+	err = linuxDelete(id)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 	c.Redirect(302, "/root/linux")
 }
 
@@ -84,11 +120,16 @@ func root_LinuxUpdate(c *gin.Context) {
 	n := c.Param("id")
 	id, err := strconv.Atoi(n)
 	if err != nil {
-		panic("ERROR")
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
 	}
 	question := c.PostForm("question")
 	hint := c.PostForm("hint")
 	anser := c.PostForm("anser")
-	linuxUpdate(id, question, hint, anser)
+	err = linuxUpdate(id, question, hint, anser)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
 	c.Redirect(302, "/root/linux")
 }

@@ -11,8 +11,8 @@ const connectString = "root:smoty@tcp(172.26.0.2:3306)/score?charset=utf8&parseT
 func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("../views/*.html")
-	r.Static("../assets", "./assets")
-	r.Static("../pictures", "./pictures")
+	r.Static("../assets", "../assets")
+	r.Static("../pictures", "../pictures")
 	store := cookie.NewStore([]byte("secret"))
 	r.Use(sessions.Sessions("user", store))
 
@@ -53,4 +53,5 @@ func main() {
 	r.POST("/root/router/delete/:id", root_RouterDelete)
 	r.POST("/root/router/update/:id", root_RouterUpdate)
 
+	r.Run(":8080")
 }

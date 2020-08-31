@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -16,7 +17,8 @@ func top(c *gin.Context) {
 func smoty(c *gin.Context) {
 	session := sessions.Default(c)
 	if session.Get("user_name") == nil {
-		panic("ログインしてない")
+		c.AbortWithError(http.StatusUnauthorized, errors.New("ログインしてない"))
+		return
 	}
 	c.HTML(200, "smoty.html", gin.H{"user_name": session.Get("user_name")})
 }
@@ -24,7 +26,8 @@ func smoty(c *gin.Context) {
 func logout(c *gin.Context) {
 	session := sessions.Default(c)
 	if session.Get("user_name") == nil {
-		panic("ログインしてない")
+		c.AbortWithError(http.StatusUnauthorized, errors.New("ログインしてない"))
+		return
 	}
 	session.Clear()
 	session.Save()

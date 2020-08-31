@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -13,20 +15,22 @@ type Problem_linux struct {
 }
 
 // DB接続
-func dbInit_linux() {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func dbInit_linux() error {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("dbInit_linux失敗")
+		return fmt.Errorf("dbInit_linux失敗: %w", err)
 	}
-	db.AutoMigrate(&Problem_linux{})
 	defer db.Close()
+	db.AutoMigrate(&Problem_linux{})
+	return nil
 }
 
-func check_linux(id int, anser string) (Problem_linux, string) {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func check_linux(id int, anser string) (Problem_linux, string, error) {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("linux_check失敗")
+		return Problem_linux{}, "", fmt.Errorf("linux_check失敗: %w", err)
 	}
+	defer db.Close()
 	var result string
 	var linux Problem_linux
 	if err := db.Where("id = ? AND anser = ?", id, anser).First(&linux).Error; err != nil {
@@ -34,61 +38,69 @@ func check_linux(id int, anser string) (Problem_linux, string) {
 	} else {
 		result = "正解"
 	}
-	db.Close()
-	return linux, result
+	return linux, result, nil
 }
 
-func linuxGetAll() []Problem_linux {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func linuxGetAll() ([]Problem_linux, error) {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("データベース開けず(dbGetAll)")
+		return nil, fmt.Errorf("dbGetAll失敗: %w", err)
 	}
-	var linux []Problem_linux
-	db.Order("created_at desc").Find(&linux)
-	db.Close()
-	return linux
-}
-
-func linuxGetOne(id int) Problem_linux {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
-	if err != nil {
-		panic("データベース開けず(dbGetOne)")
-	}
-	var linux Problem_linux
-	db.First(&linux, id)
-	db.Close()
-	return linux
-}
-
-func linuxInsert(question string, anser string, hint string) {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
-	if err != nil {
-		panic("linuxInsert失敗")
-	}
-	db.Create(&Problem_linux{Question: question, Anser: anser, Hint: hint})
 	defer db.Close()
+	var linux []Problem_linux
+	err = db.Order("created_at desc").Find(&linux).Error
+	if err != nil {
+		return nil, err
+	}
+	return linux, nil
 }
 
-func linuxUpdate(id int, question string, hint string, anser string) {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func linuxGetOne(id int) (Problem_linux, error) {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("linuxUpdate失敗")
+		return Problem_linux{}, fmt.Errorf("linuxGetone失敗: %w", err)
 	}
+	defer db.Close()
+	var linux Problem_linux
+	err = db.First(&linux, id).Error
+	if err != nil {
+		return Problem_linux{}, err
+	}
+	return linux, nil
+}
+
+func linuxInsert(question string, anser string, hint string) error {
+	db, err := gorm.Open("mysql")
+	if err != nil {
+		return fmt.Errorf("linuxInsert失敗: %w", err)
+	}
+	defer db.Close()
+	db.Create(&Problem_linux{Question: question, Anser: anser, Hint: hint})
+	return nil
+}
+
+func linuxUpdate(id int, question string, hint string, anser string) error {
+	db, err := gorm.Open("mysql", connectString)
+	if err != nil {
+		return fmt.Errorf("linuxUpdate失敗: %w", err)
+	}
+	defer db.Close()
 	var linux Problem_linux
 	db.First(&linux, id)
 	linux.Question = question
 	linux.Anser = anser
 	linux.Hint = hint
 	db.Save(&linux)
-	db.Close()
+	return nil
 }
 
-func linuxDelete(id int) {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func linuxDelete(id int) error {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("linuxDelete失敗")
+		return fmt.Errorf("linuxDelete失敗: %w", err)
 	}
+	defer db.Close()
 	var linux Problem_linux
 	db.Where("id = ?", id).Delete(&linux)
-	db.Close()
+	return nil
 }

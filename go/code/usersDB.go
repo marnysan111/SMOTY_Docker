@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -13,64 +15,65 @@ type Users struct {
 }
 
 // DB接続
-func dbInit_users() {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func dbInit_users() error {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("Init失敗")
+		return fmt.Errorf("dbInit_users失敗: %w", err)
 	}
-	db.AutoMigrate(&Users{})
 	defer db.Close()
+	db.AutoMigrate(&Users{})
+	return nil
 }
 
 //サインアップ
-func dbSignup(name string, password string) {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func dbSignup(name string, password string) error {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("Signup失敗")
-	}
-	var users Users
-	if err := db.Where("name = ?", name).First(&users).Error; err == nil {
-		panic("すでに同じ名前が使われています")
-	} else {
-		db.Create(&Users{Name: name, Password: password})
-
+		return fmt.Errorf("dbSignup失敗: %w", err)
 	}
 	defer db.Close()
+	var users Users
+	if err := db.Where("name = ?", name).First(&users).Error; err == nil {
+		return fmt.Errorf("すでに同じ名前が使われています: %w", err)
+	} else {
+		db.Create(&Users{Name: name, Password: password})
+	}
+	return nil
 }
 
 //ログイン
-func dblogin(name string, password string) Users {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func dblogin(name string, password string) (Users, error) {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("login失敗")
+		return Users{}, fmt.Errorf("login失敗: %w", err)
 	}
+	defer db.Close()
 	var users Users
 	if err := db.Where("name = ? AND password = ?", name, password).First(&users).Error; err != nil {
-		panic("存在しないアカウント")
+		return Users{}, fmt.Errorf("存在しないアカウント: %w", err)
 	}
-	db.Close()
-	return users
+	return users, nil
 }
 
-func dbDelete(id int) Users {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func dbDelete(id int) (Users, error) {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("Delete失敗")
+		return Users{}, fmt.Errorf("dbDelete失敗: %w", err)
 	}
+	defer db.Close()
 	var users Users
 	db.First(&users, id)
 	db.Delete(&users)
-	db.Close()
-	return users
+	return users, nil
 }
 
-func dbGetOne(id int) Users {
-	db, err := gorm.Open("mysql", "root:tmcit@/new_score?charset=utf8&parseTime=True&loc=Local")
+func dbGetOne(id int) (Users, error) {
+	db, err := gorm.Open("mysql", connectString)
 	if err != nil {
-		panic("GetAll失敗")
+		return Users{}, fmt.Errorf("dbGetOne失敗: %w", err)
 	}
+	defer db.Close()
 	var users Users
 	db.First(&users, id)
-	db.Close()
-	return users
+	return users, nil
 }
