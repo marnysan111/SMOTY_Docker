@@ -6,7 +6,7 @@ services:
     tty: true 
     ports:
       - "8080:8080"
-    container_name: smoty
+    container_name: go_smoty
     depends_on:
         - mysql
 
