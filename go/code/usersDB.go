@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 type Users struct {
@@ -16,22 +16,20 @@ type Users struct {
 
 // DB接続
 func dbInit_users() error {
-	db, err := gorm.Open("mysql", connectString)
+	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{})
 	if err != nil {
 		return fmt.Errorf("dbInit_users失敗: %w", err)
 	}
-	defer db.Close()
 	db.AutoMigrate(&Users{})
 	return nil
 }
 
 //サインアップ
 func dbSignup(name string, password string) error {
-	db, err := gorm.Open("mysql", connectString)
+	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{})
 	if err != nil {
 		return fmt.Errorf("dbSignup失敗: %w", err)
 	}
-	defer db.Close()
 	var users Users
 	if err := db.Where("name = ?", name).First(&users).Error; err == nil {
 		return fmt.Errorf("すでに同じ名前が使われています: %w", err)
@@ -43,11 +41,10 @@ func dbSignup(name string, password string) error {
 
 //ログイン
 func dblogin(name string, password string) (Users, error) {
-	db, err := gorm.Open("mysql", connectString)
+	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{})
 	if err != nil {
 		return Users{}, fmt.Errorf("login失敗: %w", err)
 	}
-	defer db.Close()
 	var users Users
 	if err := db.Where("name = ? AND password = ?", name, password).First(&users).Error; err != nil {
 		return Users{}, fmt.Errorf("存在しないアカウント: %w", err)
@@ -56,11 +53,10 @@ func dblogin(name string, password string) (Users, error) {
 }
 
 func dbDelete(id int) (Users, error) {
-	db, err := gorm.Open("mysql", connectString)
+	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{})
 	if err != nil {
 		return Users{}, fmt.Errorf("dbDelete失敗: %w", err)
 	}
-	defer db.Close()
 	var users Users
 	db.First(&users, id)
 	db.Delete(&users)
@@ -68,11 +64,10 @@ func dbDelete(id int) (Users, error) {
 }
 
 func dbGetOne(id int) (Users, error) {
-	db, err := gorm.Open("mysql", connectString)
+	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{})
 	if err != nil {
 		return Users{}, fmt.Errorf("dbGetOne失敗: %w", err)
 	}
-	defer db.Close()
 	var users Users
 	db.First(&users, id)
 	return users, nil

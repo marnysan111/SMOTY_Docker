@@ -6,7 +6,7 @@ services:
     tty: true 
     ports:
       - "8080:8080"
-    container_name: smoty
+    container_name: go_smoty
     depends_on:
         - mysql
 
@@ -15,7 +15,7 @@ services:
     build: ./db
     tty: true
     ports:
-      - "3306:3306"
+      - "3307:3307"
     container_name: db_smoty
     environment:
       MYSQL_ROOT_PASSWORD: smoty
