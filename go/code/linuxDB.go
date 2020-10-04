@@ -16,7 +16,9 @@ type Problem_linux struct {
 
 // DB接続
 func dbInit_linux() error {
-	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		return fmt.Errorf("dbInit_linux失敗: %w", err)
 	}
@@ -25,7 +27,9 @@ func dbInit_linux() error {
 }
 
 func check_linux(id int, anser string) (Problem_linux, string, error) {
-	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		return Problem_linux{}, "", fmt.Errorf("linux_check失敗: %w", err)
 	}
@@ -40,7 +44,9 @@ func check_linux(id int, anser string) (Problem_linux, string, error) {
 }
 
 func linuxGetAll() ([]Problem_linux, error) {
-	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(connect), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		return nil, fmt.Errorf("dbGetAll失敗: %w", err)
 	}

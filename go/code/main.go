@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const connect = "root:smoty@tcp(172.19.0.2:3306)/score?charset=utf8&parseTime=True&loc=Local"
+const connect = "root:smoty@tcp(172.18.0.3:3306)/score?charset=utf8&parseTime=True&loc=Local"
 
 func main() {
 	r := gin.Default()

@@ -9,14 +9,30 @@ services:
     container_name: go_smoty
     depends_on:
         - mysql
+    networks:
+      net:
+        ipv4_address: 172.18.0.2
+    volumes:
+      - ./go/:/go/src/smoty
 
 
   mysql:
     build: ./db
     tty: true
     ports:
-      - "3307:3307"
+      - "3306:3306"
     container_name: db_smoty
     environment:
       MYSQL_ROOT_PASSWORD: smoty
       MYSQL_DATABASE: score
+    networks:
+      net:
+        ipv4_address: 172.18.0.3
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
