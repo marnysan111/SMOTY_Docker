@@ -27,31 +27,38 @@
                 </div>
             </div>
             <div class="col-md-5 align-self-center">
+                <div id="null_check">
                 <p class="font-weight-bold top2 border-bottom">ユーザ登録はこちら</p>
                 <form action="/signup" method="POST">
                     <div class="form-group">
                         <label for="name" class="text-left control-label">名前</label>
-                        <input type="text" name="name" class="form-control"> <br>
+                        <input type="text" name="name" class="form-control" v-model="name"> <br>
                         <label for="password" class="text-left control-label">パスワード</label>
-                        <input type="password" name="password" class="form-control"> <br>
-                        <button type="submit" class="btn btn-success">登録</button>  
+                        <input type="password" name="password" class="form-control" v-model="pass"> <br>
+                        <button type="submit" class="btn btn-success" v-bind:disabled="!canEnter1">登録</button>  
                     </div>
+                </div>
                 </form>
     
                 <p class="font-weight-bold top2 border-bottom">ログインはこちら</p>
                 <form action="/login" method="POST">
                     <label for="name" class="text-left control-label">名前</label>
-                    <input type="text" name="name" class="form-control"> <br>
+                    <input type="text" name="name" class="form-control"  v-model="name"> <br>
                     <label for="password" class="text-left">パスワード</label>
-                    <input type="password" name="password" class="form-control"> <br>
+                    <input type="password" name="password" class="form-control" v-model="pass"> <br>
                     <button type="submit" class="btn btn-success">ログイン</button>
                 </form>
             </div>
         </div>
     </div>
+    <p>ccccs</p>
 </header>
 
-
+<div id="app5">
+    名前：<input type="text" v-model="name" placeholder="名前">：{{ name }} <br>
+    パスワード：<input type="text" v-model="pass" placeholder="パスワード">：{{ pass }} <br>
+    <button type="submit" v-bind:disabled="!canEnter1">登録</button>
+</div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

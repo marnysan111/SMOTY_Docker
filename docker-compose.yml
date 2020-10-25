@@ -9,6 +9,8 @@ services:
     container_name: go_smoty
     depends_on:
         - mysql
+    volumes:
+      - ./go:/go/src/smoty
 
 
   mysql:
