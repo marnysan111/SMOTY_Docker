@@ -2,7 +2,7 @@ FROM golang:latest
 
 RUN mkdir /go/src/smoty
 
-add . /go/src/smoty
+ADD . /go/src/smoty
 
 WORKDIR /go/src/smoty/code
 
